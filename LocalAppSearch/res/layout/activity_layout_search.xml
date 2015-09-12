@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3">
+        <ListView
+	        android:id="@+id/appListViewId"
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent">
+	    </ListView>
+	    <TextView
+	        android:id="@+id/toastTxtId"
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent"
+	        android:textSize="@dimen/search_toast_text_size"
+	        android:gravity="center"
+	        android:textColor="@android:color/black"
+	        android:visibility="gone"
+	        />
+    </RelativeLayout>
+    <com.pinyinsearch.ui.T9View
+        android:id="@+id/appDialerId"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@android:color/black"
+        />
+</LinearLayout>

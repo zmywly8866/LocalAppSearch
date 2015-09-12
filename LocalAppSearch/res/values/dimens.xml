@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="key_text_size">24sp</dimen>
+    <dimen name="search_toast_text_size">20sp</dimen>
+    <dimen name="app_icon_wh">72dp</dimen>
+    <dimen name="toast_text_size">20sp</dimen>
+</resources>

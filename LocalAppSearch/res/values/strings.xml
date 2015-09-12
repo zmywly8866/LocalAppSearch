@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">本地应用快搜</string>
+    <string name="long_click_start_voice">长按可语音搜索应用</string>
+    <string name="app_id">55f395bc</string>
+    <string name="dial_or_long_click_search_app">输入应用名称首字母或者长按输入显示区搜索应用</string>
+    <string name="first_in_init_app_list">首次使用，正在初始化应用列表，请稍等~</string>
+</resources>
