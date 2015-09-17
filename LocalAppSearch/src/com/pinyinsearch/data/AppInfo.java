@@ -1,6 +1,5 @@
 package com.pinyinsearch.data;
 
-import android.graphics.drawable.Drawable;
 
 public class AppInfo {
 	private String appName;
@@ -9,7 +8,7 @@ public class AppInfo {
 	private String packageName;
 	private String className;
 	private String tags;
-	private Drawable icon;
+	private byte[] iconBytes;
 	private int openCnt;
 
 	public String getAppName() {
@@ -60,14 +59,14 @@ public class AppInfo {
 		this.tags = tags;
 	}
 	
-	public Drawable getIcon() {
-		return icon;
+	public byte[] getIconBytes() {
+		return iconBytes;
 	}
 
-	public void setIcon(Drawable icon) {
-		this.icon = icon;
+	public void setIconBytes(byte[] iconBytes) {
+		this.iconBytes = iconBytes;
 	}
-	
+
 	public int getOpenCnt() {
 		return openCnt;
 	}
@@ -83,7 +82,7 @@ public class AppInfo {
 		private String packageName;
 		private String className;
 		private String tags;
-		private Drawable icon;
+		private byte[] iconBytes;
 		private int openCnt;
 		
 		public Builder setAppName(String appName){
@@ -116,8 +115,8 @@ public class AppInfo {
 			return this;
 		}
 		
-		public Builder setIcon(Drawable icon){
-			this.icon = icon;
+		public Builder setIconBytes(byte[] iconBytes){
+			this.iconBytes = iconBytes;
 			return this;
 		}
 		
@@ -138,7 +137,7 @@ public class AppInfo {
 		this.packageName = builder.packageName;
 		this.className = builder.className;
 		this.tags = builder.tags;
-		this.icon = builder.icon;
+		this.iconBytes = builder.iconBytes;
 		this.openCnt = builder.openCnt;
 	}
 

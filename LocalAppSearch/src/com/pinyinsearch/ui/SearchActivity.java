@@ -100,8 +100,6 @@ public class SearchActivity extends Activity{
 				List<AppInfo> updateAppInfoList = new ArrayList<AppInfo>();
 				updateAppInfoList.add(appInfo);
 				mAppManager.addAppInfoList(updateAppInfoList);
-				
-				mAppListAdapter.notifyDataSetChanged();
 			}
 		});
 		

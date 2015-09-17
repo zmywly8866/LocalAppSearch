@@ -1,6 +1,5 @@
 package com.pinyinsearch.data;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,12 +7,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.PixelFormat;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 
 public class APPManager {
 	private APPInfoDBHelper mAPPInfoDBHelper = null;
@@ -36,7 +29,7 @@ public class APPManager {
 				.setFullSpell(cursor.getString(cursor.getColumnIndex(APPInfoDBHelper.APP_FULL_SPELL)))
 				.setPackageName(cursor.getString(cursor.getColumnIndex(APPInfoDBHelper.APP_PACKAGE_NAME)))
 				.setTags(cursor.getString(cursor.getColumnIndex(APPInfoDBHelper.APP_TAGS)))
-				.setIcon(new BitmapDrawable(bytes2Bimap(cursor.getBlob(cursor.getColumnIndex(APPInfoDBHelper.APP_ICON)))))
+				.setIconBytes(cursor.getBlob(cursor.getColumnIndex(APPInfoDBHelper.APP_ICON)))
 				.setOpenCnt(cursor.getInt(cursor.getColumnIndex(APPInfoDBHelper.APP_OPEN_CNT)))
 				.build();
 				
@@ -63,7 +56,7 @@ public class APPManager {
 				.setFullSpell(cursor.getString(cursor.getColumnIndex(APPInfoDBHelper.APP_FULL_SPELL)))
 				.setPackageName(cursor.getString(cursor.getColumnIndex(APPInfoDBHelper.APP_PACKAGE_NAME)))
 				.setTags(cursor.getString(cursor.getColumnIndex(APPInfoDBHelper.APP_TAGS)))
-				.setIcon(new BitmapDrawable(bytes2Bimap(cursor.getBlob(cursor.getColumnIndex(APPInfoDBHelper.APP_ICON)))))
+				.setIconBytes(cursor.getBlob(cursor.getColumnIndex(APPInfoDBHelper.APP_ICON)))
 				.setOpenCnt(cursor.getInt(cursor.getColumnIndex(APPInfoDBHelper.APP_OPEN_CNT)))
 				.build();
 			}
@@ -85,7 +78,7 @@ public class APPManager {
 				contentValues.put(APPInfoDBHelper.APP_FULL_SPELL, appInfo.getAppFullSpell());
 				contentValues.put(APPInfoDBHelper.APP_PACKAGE_NAME, appInfo.getPackageName());
 				contentValues.put(APPInfoDBHelper.APP_TAGS, appInfo.getTags());
-				contentValues.put(APPInfoDBHelper.APP_ICON, bitmap2Bytes(drawableToBitmap(appInfo.getIcon())));
+				contentValues.put(APPInfoDBHelper.APP_ICON, appInfo.getIconBytes());
 				contentValues.put(APPInfoDBHelper.APP_OPEN_CNT, appInfo.getOpenCnt());
 				mSqliteDatabase.insert(APPInfoDBHelper.TABLE_NAME, null, contentValues);
 			}else{
@@ -98,7 +91,7 @@ public class APPManager {
 					contentValues.put(APPInfoDBHelper.APP_FULL_SPELL, appInfo.getAppFullSpell());
 					contentValues.put(APPInfoDBHelper.APP_PACKAGE_NAME, appInfo.getPackageName());
 					contentValues.put(APPInfoDBHelper.APP_TAGS, appInfo.getTags());
-					contentValues.put(APPInfoDBHelper.APP_ICON, bitmap2Bytes(drawableToBitmap(appInfo.getIcon())));
+					contentValues.put(APPInfoDBHelper.APP_ICON, appInfo.getIconBytes());
 					contentValues.put(APPInfoDBHelper.APP_OPEN_CNT, appInfo.getOpenCnt());
 					System.out.println("====== appName == " + appInfo.getAppName() + " openCnt == " + appInfo.getOpenCnt());
 					mSqliteDatabase.update(APPInfoDBHelper.TABLE_NAME, contentValues, APPInfoDBHelper.APP_NAME + "=?", new String[]{appInfo.getAppName()});
@@ -121,44 +114,5 @@ public class APPManager {
 		if(null != mAPPInfoDBHelper){
 			mAPPInfoDBHelper.close();
 		}
-	}
-	
-	private byte[] bitmap2Bytes(Bitmap bitmap) {
-		if (null == bitmap) {
-			return null;
-		}
-
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-
-		bitmap.recycle();
-		bitmap = null;
-
-		return baos.toByteArray();
-	}
-
-	private Bitmap bytes2Bimap(byte[] buffer) {
-		if (null != buffer && buffer.length != 0) {
-			return BitmapFactory.decodeByteArray(buffer, 0, buffer.length);
-		} else {
-			return null;
-		}
-	}
-	
-	private Bitmap drawableToBitmap(Drawable drawable) {
-		if(null == drawable){
-			return null;
-		}
-		
-		Bitmap bitmap = Bitmap.createBitmap(
-			drawable.getIntrinsicWidth(),
-			drawable.getIntrinsicHeight(),
-			drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888 : Bitmap.Config.RGB_565);
-		Canvas canvas = new Canvas(bitmap);
-		drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-		drawable.draw(canvas);
-
-		return bitmap;
-
 	}
 }

@@ -14,10 +14,11 @@ public final class R {
         public static final int key_text_color=0x7f040000;
     }
     public static final class dimen {
-        public static final int app_icon_wh=0x7f050002;
+        public static final int app_icon_wh=0x7f050003;
+        public static final int app_item_wh=0x7f050002;
         public static final int key_text_size=0x7f050000;
         public static final int search_toast_text_size=0x7f050001;
-        public static final int toast_text_size=0x7f050003;
+        public static final int toast_text_size=0x7f050004;
     }
     public static final class drawable {
         public static final int ab_home_back_p=0x7f020000;

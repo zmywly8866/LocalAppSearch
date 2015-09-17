@@ -4,11 +4,8 @@ import java.util.List;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Matrix;
-import android.graphics.PixelFormat;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,10 +20,10 @@ public class AppListAdapter extends BaseAdapter {
 	private List<AppInfo> mAppInfoList = null;
 	private LayoutInflater mLayoutInflater = null;
 	private ViewHolder mViewHolder = null;
-	private int appWH = 0;
+	private int itemWH = 0;
 	public AppListAdapter(Context context){
 		mLayoutInflater = LayoutInflater.from(context);
-		appWH = (int)context.getResources().getDimension(R.dimen.app_icon_wh);
+		itemWH = (int)context.getResources().getDimension(R.dimen.app_icon_wh);
 	}
 	
 	@Override
@@ -76,48 +73,37 @@ public class AppListAdapter extends BaseAdapter {
 	}
 	
 	private void showItem(AppInfo appInfo){
-		mViewHolder.iconImg.setBackgroundDrawable(zoomImage(appInfo.getIcon(),appWH,appWH));
+		mViewHolder.iconImg.setBackgroundDrawable(new BitmapDrawable(decodeBitmap(appInfo,itemWH, itemWH)));
 		mViewHolder.appNameTxt.setText(appInfo.getAppName());
 		mViewHolder.openCntTxt.setText(appInfo.getOpenCnt()>0?appInfo.getOpenCnt()+"":"");
 	}
 	
-	/***
-     * 图片的缩放方法
-     * @param bgimage 源图片资源
-     * @param newWidth 缩放后宽度
-     * @param newHeight 缩放后高度
-     */
-    private Drawable zoomImage(Drawable drawable, double newWidth, double newHeight) {
-    	Bitmap bgimage = drawableToBitmap(drawable);
-        // 获取这个图片的宽和高
-        float width = bgimage.getWidth();
-        float height = bgimage.getHeight();
-        // 创建操作图片用的matrix对象
-        Matrix matrix = new Matrix();
-        // 计算宽高缩放率
-        float scaleWidth = ((float) newWidth) / width;
-        float scaleHeight = ((float) newHeight) / height;
-        // 缩放图片动作
-        matrix.postScale(scaleWidth, scaleHeight);
-        return new BitmapDrawable(Bitmap.createBitmap(bgimage, 0, 0, (int) width, (int) height, matrix, true));
+    private Bitmap decodeBitmap(AppInfo appInfo, int reqWidth, int reqHeight){
+    	final BitmapFactory.Options options = new BitmapFactory.Options();
+    	options.inJustDecodeBounds = true;
+    	BitmapFactory.decodeByteArray(appInfo.getIconBytes(), 0, appInfo.getIconBytes().length, options);
+    	options.inSampleSize=calculateInSampleSize(options, reqWidth, reqHeight);
+    	options.inJustDecodeBounds = false;
+    	
+    	return BitmapFactory.decodeByteArray(appInfo.getIconBytes(), 0, appInfo.getIconBytes().length, options);
     }
     
-    private Bitmap drawableToBitmap(Drawable drawable) {
-		if(null == drawable){
-			return null;
-		}
-		
-		Bitmap bitmap = Bitmap.createBitmap(
-			drawable.getIntrinsicWidth(),
-			drawable.getIntrinsicHeight(),
-			drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888 : Bitmap.Config.RGB_565);
-		Canvas canvas = new Canvas(bitmap);
-		drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-		drawable.draw(canvas);
-
-		return bitmap;
-
-	}
+    private int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight){
+    	final int width = options.outWidth;
+    	final int height = options.outHeight;
+    	int inSampleSize = 1;
+    	
+    	if(height > reqHeight || width > reqWidth){
+    		final int halfWidth = width/2;
+    		final int halfHeight = height/2;
+    		
+    		while((halfHeight/inSampleSize)>=reqHeight&&(halfWidth/inSampleSize)>=reqWidth){
+    			inSampleSize *= 2;
+    		}
+    	}
+    	
+    	return inSampleSize;
+    }
 
 	
 	class ViewHolder{
