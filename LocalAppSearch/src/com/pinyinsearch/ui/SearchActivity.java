@@ -53,6 +53,12 @@ public class SearchActivity extends Activity{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_layout_search);
+		findViews();
+		getAppInfo();
+		initiFlytek();
+	}
+
+	private void findViews() {
 		mAppListView = (ListView)findViewById(R.id.appListViewId);
 		mToastTxtView = (TextView)findViewById(R.id.toastTxtId);
 		mAppListAdapter = new AppListAdapter(this);
@@ -85,6 +91,7 @@ public class SearchActivity extends Activity{
 				startRecong();
 			}
 		});
+		
 		mAppListView.setAdapter(mAppListAdapter);
 		mAppListView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -93,6 +100,7 @@ public class SearchActivity extends Activity{
 				appInfo.setOpenCnt(appInfo.getOpenCnt()+1);
 				System.out.println("====== onAddDialCharacter packageName == " + appInfo.getPackageName() + " className == " + appInfo.getClassName());
 				Intent intent = new Intent();
+				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
 				intent.setComponent(new ComponentName(appInfo.getPackageName(), appInfo.getClassName()));
 				startActivity(intent);
 				
@@ -104,8 +112,6 @@ public class SearchActivity extends Activity{
 		});
 		
 		mAppManager = new APPManager(this);
-		getAppInfo();
-		initiFlytek();
 	}
 	
 	public void getAppInfo(){
